@@ -1,0 +1,59 @@
+@import "compass/reset";
+@import 'compass/css3',
+        'compass/utilities/general/hacks';
+//
+$experimental-support-for-mozilla : true !default;
+$experimental-support-for-webkit : true !default;
+$support-for-original-webkit-gradients : true !default;
+$experimental-support-for-opera : true !default;
+$experimental-support-for-microsoft : true !default;
+$experimental-support-for-khtml : true !default;
+@mixin flexbox {
+  display: -webkit-box !important;
+  display: -moz-box !important;
+  display: -ms-box !important;
+  display: -o-box !important;
+  display: box !important;
+}
+
+@mixin flex-center-center {
+  @include box-orient(vertical);
+  @include box-align(center);
+  @include box-pack(center);
+}
+
+@mixin flex-left-center {
+  @include box-orient(vertical);
+  @include box-align(left);
+  @include box-pack(center);
+}
+
+@mixin flex-right-center {
+  @include box-orient(vertical);
+  @include box-align(end);
+  @include box-pack(center);
+}
+@mixin clearfix {
+  &:before, &:after {
+    content: ' ';
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+
+  @include has-layout-zoom;
+}
+.cl:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.cl { display: inline-block; }
+
+* {
+  @include reset-box-model;
+  -webkit-tap-highlight-color: rgba(#000, 0);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}

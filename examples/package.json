@@ -1,0 +1,6 @@
+{
+    "dependencies": {
+        "express": "~2.2.2",
+        "connect": "~2.7.8"
+    }
+}
