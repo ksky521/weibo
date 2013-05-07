@@ -1,3 +1,4 @@
 /node_modules
 /php-sdk
 /examples/node_modules
+/config.json

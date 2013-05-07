@@ -51,8 +51,10 @@ app.get('/', function(req, res) {
 app.get('/send', function(req, res) {
     if (req.session.access_token && req.session.uid) {
         weibo = new Weibo(req.session.access_token, '');
-        
-        weibo.api('statuses/update', {}).done(function(err, result) {
+        var data = {
+            status:'test'
+        }
+        weibo.api('statuses/update', data).done(function(err, result) {
             console.log(result);
             res.end(JSON.stringify(result));
         });
