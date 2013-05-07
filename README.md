@@ -15,25 +15,67 @@ npm install iweibo
 
 ## 配置
 
+### 引入iweibo
+
+```shell
+var iweibo = require('iweibo');
+var Weibo = iweibo.Weibo;
+```
+
 ### 配置app信息
 
-打开 ```config.json``` 修改自己的appkey和appsecret
+ * iweibo.set(name, options); //设置单条
+ * iweibo.set(optionsObject);  //设置多条
+
+```javascript
+iweibo.set({
+    appkey: 'xxx',
+    appsecret: 'xxxxxxxxxx'
+})
+```
+支持的配置：
+
+```javascript
+var CONFIG = {
+    appkey: '',
+    appsecret: '',
+    oauth_host: 'https://api.weibo.com/oauth2/authorize',
+    access_url: 'https://api.weibo.com/oauth2/access_token',
+    api_url: 'https://api.weibo.com/2/'
+}
+```
 
 ### 配置api接口
 
-打开 ```lib/apis.js``` 配置下微博接口（由于太多，并且不时更新，所以我就没全配置），配置下自己使用的接口，方法参考下本js文件，基本如下：
+ * iweibo.setAPI(apiname, options); //设置单条api
+ * iweibo.setAPI(optionsObject);  //设置多条api
+
+```javascript
+iweibo.setAPI('statuses/update', {
+    method: 'post',
+    params: {
+        status: 'hello, world',
+        visible: 0
+    }
+});
+```
+
+
+配置下微博接口（由于太多，并且不时更新，所以我就没全配置），配置下自己使用的接口，方法参考下件，基本如下：
 
 ```javascript
 '接口名称': {
-    method: 'get', //请求方法，post或者get，参考api文档
+    method: 'get', //请求方法，post或者get(get可省略)，参考api文档
     params: { //默认参数，不用填写appkey和access_token，程序会自动补上
         
     }
 }
 ```
 
+可以讲接口统一写到一个json或者js文件中，然后使用 ```require``` 引入，直接给 ```setAPI``` 传入
+
 ## 使用
-参考 ```examplesa/app.js``` 文件（需要先在本目录执行 ```npm install``` 安装依赖模块）
+参考 ```examples/app.js``` 文件（需要先在本目录执行 ```npm install``` 安装依赖模块）
 
 修改host，添加下面内容：
 

@@ -4,7 +4,9 @@ var fs = require('fs');
 var querystring = require('querystring');
 
 var express = require('express');
-var Weibo = require(__dirname + '/../index');
+var iweibo = require(__dirname + '/../index');
+var Weibo = iweibo.Weibo;
+
 var connect = require('connect');
 
 var templateDir = __dirname + '/template/';
@@ -20,6 +22,7 @@ var storeMemory = new MemoryStore({
     reapInterval: 60000 * 10
 });
 
+//配置
 app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.cookieParser());
@@ -31,6 +34,18 @@ app.configure(function() {
 
     app.use(express.static(__dirname + '/static'));
 });
+
+iweibo.set({
+    appkey: '55555555555555555555',
+    appsecret: '55555555555555'
+}).setAPI('statuses/update', {
+    method: 'post',
+    params: {
+        status: 'hello, world',
+        visible: 0
+    }
+});
+
 
 var weibo = new Weibo();
 
@@ -51,12 +66,12 @@ app.get('/', function(req, res) {
 app.get('/send', function(req, res) {
     if (req.session.access_token && req.session.uid) {
         weibo = new Weibo(req.session.access_token, '');
-        var data = {
-            status:'test'
-        }
-        weibo.api('statuses/update', data).done(function(err, result) {
+
+        weibo.api('statuses/update', {}).done(function(err, result) {
             console.log(result);
             res.end(JSON.stringify(result));
+        }).fail(function(err, result) {
+            res.end('<h1>出错啦！！</h1><p>错误信息如下：</p>' + JSON.stringify(result));
         });
 
         return;
