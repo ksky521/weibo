@@ -3,6 +3,7 @@
     "description": "微博 node sdk 客户端",
     "author": "Theowang",
     "email": "ksky521@gmail.com",
+    "version": "1.1.0",
     "devDependencies": {
         "grunt": "~0.4.1",
         "grunt-contrib-jshint": "~0.2.0",
