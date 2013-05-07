@@ -10,8 +10,7 @@
 安装
 
 ```shell
-wget http://github.com/ksky521/weibo/tarball/master
-npm install
+npm install iweibo
 ```
 
 ## 配置
