@@ -10,7 +10,7 @@ var Weibo = iweibo.Weibo;
 var connect = require('connect');
 
 var templateDir = __dirname + '/template/';
-var app = module.export = express.createServer();
+var app = module.export = express();
 
 var SITE = 'http://testapp.cn';
 var backURL = SITE + '/callback';
@@ -36,8 +36,8 @@ app.configure(function() {
 });
 
 iweibo.set({
-    appkey: '55555555555555555555',
-    appsecret: '55555555555555'
+    appkey: '4131485461',
+    appsecret: '064221114d2945c915f664d58aaf1557'
 }).setAPI('statuses/update', {
     method: 'post',
     params: {
@@ -122,6 +122,5 @@ app.get('/callback', function(req, res) {
 
 
 app.listen(80, function() {
-    var addr = app.address();
-    console.log('app listening on http://127.0.0.1：' + addr.port);
+    console.log('app starting');
 });
