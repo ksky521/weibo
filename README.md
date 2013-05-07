@@ -10,7 +10,8 @@
 安装
 
 ```shell
-npm install http://github.com/ksky521/weibo/tarball/master
+wget http://github.com/ksky521/weibo/tarball/master
+npm install
 ```
 
 ## 配置
