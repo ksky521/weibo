@@ -36,8 +36,8 @@ app.configure(function() {
 });
 
 iweibo.set({
-    appkey: '4131485461',
-    appsecret: '064221114d2945c915f664d58aaf1557'
+    appkey: 'xxxxxxxx',
+    appsecret: 'xxxxxxxx'
 }).setAPI('statuses/update', {
     method: 'post',
     params: {
