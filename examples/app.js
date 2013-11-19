@@ -1,18 +1,18 @@
-var bdTemplate = require('./baiduTemplate').template;
-
 var fs = require('fs');
 var querystring = require('querystring');
 
 var express = require('express');
+var connect = require('connect');
+var ejs = require('ejs');
 var iweibo = require(__dirname + '/../index');
 var Weibo = iweibo.Weibo;
 
-var connect = require('connect');
+var cfg = require('./config.json');
 
 var templateDir = __dirname + '/template/';
 var app = module.export = express();
 
-var SITE = 'http://testapp.cn';
+var SITE = cfg.site_url;
 var backURL = SITE + '/callback';
 
 var MemoryStore = connect.middleware.session.MemoryStore;
@@ -36,8 +36,8 @@ app.configure(function() {
 });
 
 iweibo.set({
-    appkey: 'xxxxxxxx',
-    appsecret: 'xxxxxxxx'
+    appkey: cfg.app_key,
+    appsecret: cfg.app_secret
 }).setAPI('statuses/update', {
     method: 'post',
     params: {
@@ -51,15 +51,12 @@ var weibo = new Weibo();
 
 
 app.get('/', function(req, res) {
-    var realpath = templateDir + 'index.html';
-    var html = fs.readFileSync(realpath);
+    var realpath = templateDir + 'index.ejs';
+    var html = fs.readFileSync(realpath).toString();
     var data = {};
 
-
     data.loginURL = weibo.getAuthorizeURL(backURL);
-
-    html = bdTemplate(html, data);
-
+    html = ejs.render(html, data);
     res.end(html);
 });
 
@@ -67,7 +64,10 @@ app.get('/send', function(req, res) {
     if (req.session.access_token && req.session.uid) {
         weibo = new Weibo(req.session.access_token, '');
 
-        weibo.api('statuses/update', {}).done(function(err, result) {
+        weibo.api('statuses/update', {
+            status: 'hi, iweibo! https://github.com/ksky521/weibo ' + Date.now(),
+            visible: 0
+        }).done(function(err, result) {
             console.log(result);
             res.end(JSON.stringify(result));
         }).fail(function(err, result) {
@@ -76,10 +76,11 @@ app.get('/send', function(req, res) {
 
         return;
     }
-    var html = fs.readFileSync(templateDir + 'error.html');
+    var html = fs.readFileSync(templateDir + 'error.ejs');
     res.end(html);
 });
 
+//获取access_token
 app.get('/callback', function(req, res) {
     if (req.session.access_token && req.session.uid) {
         weibo = new Weibo(req.session.access_token, '');
@@ -99,20 +100,20 @@ app.get('/callback', function(req, res) {
         code: code,
         redirect_uri: backURL
     }).done(function(err, data) {
-        var realpath = templateDir + 'callback.html';
-        html = fs.readFileSync(realpath);
+        var realpath = templateDir + 'callback.ejs';
+        html = fs.readFileSync(realpath).toString();
         data = JSON.parse(data);
         data.refresh_token = data.refresh_token || '';
         req.session.refresh_token = data.refresh_token;
         req.session.access_token = data.access_token;
         req.session.uid = data.uid;
 
-        html = bdTemplate(html, data);
+        html = ejs.render(html, data);
         res.end(html);
     }).fail(function(err, data) {
         var html;
         if (err) {
-            html = fs.readFileSync(templateDir + 'error.html');
+            html = fs.readFileSync(templateDir + 'error.ejs');
         }
         res.end(html);
     });

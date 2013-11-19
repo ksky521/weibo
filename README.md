@@ -67,7 +67,7 @@ iweibo.setAPI('statuses/update', {
 '接口名称': {
     method: 'get', //请求方法，post或者get(get可省略)，参考api文档
     params: { //默认参数，不用填写appkey和access_token，程序会自动补上
-        
+
     }
 }
 ```
@@ -126,3 +126,11 @@ weibo.api('users/show', urlObj).done(function(err, result) {
     res.end(JSON.stringify(result));
 });
 ```
+
+
+## 测试方法
+
+* 进入``examples``
+* 修改``config.json``，回调地址需要在[open.weibo.com](http://open.weibo.com)配置好，然后修改自己的host，将回调地址指到``127.0.0.1``
+* 执行 ``npm install``
+* 访问自己在``config.json``配置的网站
